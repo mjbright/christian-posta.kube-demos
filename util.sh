@@ -3,7 +3,35 @@
 readonly  reset=$(tput sgr0)
 readonly  green=$(tput bold; tput setaf 2)
 readonly yellow=$(tput bold; tput setaf 3)
-readonly   blue=$(tput bold; tput setaf 6)
+readonly   blue=$(tput bold; tput setaf 4)
+readonly   red=$(tput bold; tput setaf 1)
+readonly  magenta=$(tput bold; tput setaf 5)
+readonly  cyan=$(tput bold; tput setaf 6)
+
+function die {
+    echo "$0: ${red}die - $*${reset}" >&2
+    for i in 0 1 2 3 4 5 6 7 8 9 10;do
+        CALLER_INFO=`caller $i`
+        [ -z "$CALLER_INFO" ] && break
+        echo "    Line: $CALLER_INFO" >&2
+    done
+    exit 1
+}
+
+[ -z "$__NODE_RUN" ] &&
+    die "Export __NODE_RUN as either minishift/minikube/node/vagrant"
+
+function node_run() {
+    case $__NODE in
+        node)      $*;;
+        # TO TEST:
+	vagrant)   vagrant ssh master -- $*;;
+        minishift) minishift ssh -- $*;;
+        minikube)  minikube  ssh -- $*;;
+
+	*) die "Not implemented __NODE_RUN='$__NODE_RUN'";;
+    esac
+}
 
 function desc() {
     maybe_first_prompt
