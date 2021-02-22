@@ -1,15 +1,15 @@
 #!/bin/bash
 
-readonly  reset=$(tput sgr0)
-readonly  green=$(tput bold; tput setaf 2)
-readonly yellow=$(tput bold; tput setaf 3)
-readonly   blue=$(tput bold; tput setaf 4)
-readonly   red=$(tput bold; tput setaf 1)
+readonly color_reset=$(tput sgr0)
+readonly      red=$(tput bold; tput setaf 1)
+readonly    green=$(tput bold; tput setaf 2)
+readonly   yellow=$(tput bold; tput setaf 3)
+readonly     blue=$(tput bold; tput setaf 4)
 readonly  magenta=$(tput bold; tput setaf 5)
-readonly  cyan=$(tput bold; tput setaf 6)
+readonly     cyan=$(tput bold; tput setaf 6)
 
 function die {
-    echo "$0: ${red}die - $*${reset}" >&2
+    echo "$0: ${red}die - $*${color_reset}" >&2
     for i in 0 1 2 3 4 5 6 7 8 9 10;do
         CALLER_INFO=`caller $i`
         [ -z "$CALLER_INFO" ] && break
@@ -35,12 +35,12 @@ function node_run() {
 
 function desc() {
     maybe_first_prompt
-    echo "$blue# $@$reset"
+    echo "$blue# $@$color_reset"
     prompt
 }
 
 function prompt() {
-    echo -n "$yellow\$ $reset"
+    echo -n "$yellow\$ $color_reset"
 }
 
 started=""
@@ -52,7 +52,6 @@ function maybe_first_prompt() {
 }
 
 function backtotop() {
-    
     clear
 }
 
@@ -62,7 +61,7 @@ function run() {
     if [ -n "$DEMO_RUN_FAST" ]; then
       rate=1000
     fi
-    echo "$green$1$reset" | pv -qL $rate
+    echo "$green$1$color_reset" | pv -qL $rate
     if [ -n "$DEMO_RUN_FAST" ]; then
       sleep 0.5
     fi
