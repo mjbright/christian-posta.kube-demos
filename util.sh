@@ -18,18 +18,18 @@ function die {
     exit 1
 }
 
-[ -z "$__NODE_RUN" ] &&
-    die "Export __NODE_RUN as either minishift/minikube/node/vagrant"
+[ -z "$K8S_ENV" ] &&
+    die "Export K8S_ENV as either minishift/minikube/node/vagrant"
 
 function node_run() {
-    case $__NODE in
+    case $K8S_ENV in
         node)      $*;;
         # TO TEST:
 	vagrant)   vagrant ssh master -- $*;;
         minishift) minishift ssh -- $*;;
         minikube)  minikube  ssh -- $*;;
 
-	*) die "Not implemented __NODE_RUN='$__NODE_RUN'";;
+	*) die "Not implemented K8S_ENV='$K8S_ENV'";;
     esac
 }
 
