@@ -26,6 +26,7 @@ node_run "for i in \$(seq 1 10); do \\
         curl --connect-timeout 1 -s $IP; \\
         sleep 1; \\
     done\\
-    '"
+    "
+
 desc "Let's cleanup and delete that pod"
 run "kubectl --namespace=demos delete pod pods-demo-pod"
