@@ -36,7 +36,7 @@ function wait_on_pods() {
 # - Run comand on master node
 function node_run() {
     case $K8S_ENV in
-        node)      $*;;
+        node)      eval "$*";;
         # TO TEST:
 	vagrant)   vagrant ssh master -- $*;;
         minishift) minishift ssh -- $*;;
