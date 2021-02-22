@@ -16,12 +16,10 @@ desc "Hey look, a pod!"
 run "kubectl --namespace=demos get pods"
 
 desc "Get the pod's IP"
-run "kubectl --namespace=demos get pod pods-demo-pod -o yaml | grep podIP"
+run "kubectl --namespace=demos get pod pods-demo-pod -o custom-columns=.NAME:status.podIP --no-headers"
 
 trap "" SIGINT
-IP=$(kubectl --namespace=demos get pod pods-demo-pod -o yaml \
-        | grep podIP \
-        | cut -f2 -d:)
+IP=$( kubectl --namespace=demos get pod pods-demo-pod -o custom-columns=.NAME:status.podIP --no-headers )
 
 desc "poke the pod"
 node_run "for i in \$(seq 1 10); do \\
