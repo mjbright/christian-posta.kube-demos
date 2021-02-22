@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NS="demos"
+
 readonly color_reset=$(tput sgr0)
 readonly      red=$(tput bold; tput setaf 1)
 readonly    green=$(tput bold; tput setaf 2)
@@ -28,8 +30,8 @@ function wait_on_pods() {
     local POD_NAME=$1; shift
 
     echo "Waiting for $POD_NAME Pod to be in Running state"
-    while kubectl -n demos get pods $POD_NAME --no-headers | grep Running; do echo "..."; sleep 1; done
-    kubectl -n demos get pods $POD_NAME
+    while kubectl -n $NS get pods $POD_NAME --no-headers | grep Running; do echo "..."; sleep 1; done
+    kubectl -n $NS get pods $POD_NAME
 }
 
 # node-run <COMMAND>
