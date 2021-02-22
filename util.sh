@@ -38,11 +38,17 @@ function wait_on_pods() {
 # - Run comand on master node
 function node_run() {
     case $K8S_ENV in
+        # node: we're running directly on a cluster node:
         node)      eval "$*";;
+
         # TO TEST:
-	vagrant)   vagrant ssh master -- $*;;
-        minishift) minishift ssh -- $*;;
-        minikube)  minikube  ssh -- $*;;
+        # *: connect to node via vagrant/minishift/minikube as appropriate
+	vagrant)   vagrant ssh master -- eval "$*";;
+        minishift) minishift ssh      -- eval "$*";;
+        minikube)  minikube  ssh      -- eval "$*";;
+
+        # TO implement:
+        #pod)      kubectl run node_run_pod --image alpine:latest --rm -it -- /bin/sh -c "eval '$*'";;
 
 	*) die "Not implemented K8S_ENV='$K8S_ENV'";;
     esac
