@@ -21,6 +21,19 @@ function die {
 [ -z "$K8S_ENV" ] &&
     die "Export K8S_ENV as either minishift/minikube/node/vagrant"
 
+# wait_on_pods <POD_NAME>
+# - wait for pod to be in Running state
+# TODO: modify to wait on N/N containers
+function wait_on_pods() {
+    local POD_NAME=$1; shift
+
+    echo "Waiting for $POD_NAME Pod to be in Running state"
+    while kubectl -n demos get pods $POD_NAME --no-headers | grep Running; do echo "..."; sleep 1; done
+    kubectl -n demos get pods $POD_NAME
+}
+
+# node-run <COMMAND>
+# - Run comand on master node
 function node_run() {
     case $K8S_ENV in
         node)      $*;;
